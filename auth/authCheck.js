@@ -1,29 +1,42 @@
-// const jwt = require('jsonwebtoken');
-const authConfig = require('../auth/authConfig');
-const { JWT_SECRET } = require('../auth/authConfig');
+var express = require('express');
+var router = express.Router();
 
-verifyToken = (req, res, next) => {
-  let token = req.session.token;
+exports.authCheck = (req, res, next) => {
+  console.log(hello + req.user);
 
-  if (!token) {
-    return res.status(403).send({
-      message: 'No token provided!',
-    });
+  if (req.auth_token && isAuthenticated(req.auth_token)) next();
+  else {
+    res.send('You are not authenticated');
+    res.status(401).end();
   }
-
-  jwt.verify(token, JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: 'Unauthorized',
-      });
-    }
-    req.userId = decoded.id;
-    next();
-  });
 };
 
-const authJWT = {
-  verifyToken,
-};
+// // const jwt = require('jsonwebtoken');
+// const authConfig = require('../auth/authConfig');
+// const { JWT_SECRET } = require('../auth/authConfig');
 
-module.exports = authJWT;
+// verifyToken = (req, res, next) => {
+//   let token = req.session.token;
+
+//   if (!token) {
+//     return res.status(403).send({
+//       message: 'No token provided!',
+//     });
+//   }
+
+//   jwt.verify(token, JWT_SECRET, (err, decoded) => {
+//     if (err) {
+//       return res.status(401).send({
+//         message: 'Unauthorized',
+//       });
+//     }
+//     req.userId = decoded.id;
+//     next();
+//   });
+// };
+
+// const authJWT = {
+//   verifyToken,
+// };
+
+module.exports = router;
