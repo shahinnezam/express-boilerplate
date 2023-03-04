@@ -1,38 +1,43 @@
 const { Router } = require('express');
-const User = require('../database/schemas/User');
-const { hashPassword, comparePassword } = require('../utils/helpers');
+const User = require('..database/schemas/user');
+const { hashPassword, comparePassword } = require('../utils/password');
 
 const router = Router();
 
-// login a user
-router.post('/login', async (request, response) => {
-  const { email, password } = request.body;
-  if (!email || !password) return response.send(400);
-  const userDB = await User.findOne({ email });
-  if (!userDB) return response.send(401);
-  const isValid = comparePassword(password, userDB.password);
-  if (isValid) {
-    console.log('Authenticated Successfully!');
-    request.session.user = userDB;
-    return response.send(200);
-  } else {
-    console.log('Failed to Authenticate');
-    return response.send(401);
-  }
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
 });
 
-// Register a new user
-router.post('/register', async (request, response) => {
-  const { email } = request.body;
-  const userDB = await User.findOne({ email });
-  if (userDB) {
-    response.status(400).send({ msg: 'User already exists!' });
-  } else {
-    const password = hashPassword(request.body.password);
-    console.log(password);
-    const newUser = await User.create({ username, password, email });
-    response.send(201);
-  }
+let users = [{
+    id: userId,
+    username: 'test',
+    password: '123'
+}]
+
+let sessions = [{
+    'sessionId': '123456',
+    'token': 'sdafklj',
+    'user': 'shahin'
+}]
+
+router.post('/signup', (req, res, next) => {
+    if (!req.body || !req.body.username || !req.body.password) {
+        res.send(400, 'Bad Request');
+        return;
+    }
+    else
+        next();
 });
 
-module.exports = router;
+router.post('/login', (req, res) => {
+    if (!req.body || !req.body.username || !req.body.password) {
+        response.send(400, 'Bad Request')
+    }
+}
+)
+// const user = mongo.users.findOne({ username: username })
+// if (user) {
+//     res
+
+module.export = router;

@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
@@ -44,6 +44,11 @@ router.get('/', function (req, res, next) {
   console.log(req.user);
   res.json({ data: 'list of users', users });
   next();
+});
+
+router.get('/', function (req, res, next) {
+  req.user
+  res.json({data: 'list of users'});
 });
 
 // Signup api
