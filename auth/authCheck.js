@@ -51,8 +51,11 @@ exports.authCheck = (req, res, next) => {
 }
 
 exports.authCheck = (req, res, next) => {
-    if (req.auth_token && isAuthenticated(req.auth_token))
+    req.headers.authorization;
+    const user = users[req.auth_token];
+    if (user === req.heaer.authorization)
         next();
-    else
-        res.status(401).end();
-}
+    if (!user) {
+        res.send(401, 'forbidden);
+    }
+});
