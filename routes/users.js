@@ -15,7 +15,7 @@ const users = [
     id: 2,
     name: 'bob',
     email: 'bob@example.com',
-    password: '$2b$10$eVcM/bM09cJwyhbPDYXuVOnKZt57eSyV7ndiHT3FcFjKl2BJHbJ0m',
+    password: '$2b$10$eVcM/bM09cJwyhbPDYXuVOnKZt572dlkasdlkfj2j3kjasfnvlnad',
   },
 ];
 
@@ -47,29 +47,39 @@ router.get('/', function (req, res, next) {
 // Signup api
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, 5);
   const user = { id: users.length + 1, name, email, password: hashedPassword };
   users.push(user);
   const token = generateToken(user);
+  res.send({ msg: 'User created successfully' });
   res.json({ token });
 });
 
 // Login api
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = users.find((u) => u.email === email);
-  if (!user) {
-    console.log('User not found!');
-    return res.sendStatus(401);
+router.post(
+  '/login',
+  async (req, res, next) => {
+    const { email, password } = req.body;
+    const user = users.find((u) => u.email === email);
+    if (!user) {
+      console.log('User not found!');
+      return res.sendStatus(401);
+    }
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      console.log('Invalid password!');
+      return res.sendStatus(401);
+    }
+    console.log('passwords match');
+    next();
+  },
+  (req, res) => {
+    authenticateToken(req.param.authorization, res, next());
   }
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    console.log('Invalid password!');
-    return res.sendStatus(401);
-  }
-  console.log('passwords match');
-  // const token = generateToken(user);
-  // res.json({ token });
+);
+
+router.get('/profile', authenticateToken, (req, res) => {
+  res.json(req.user);
 });
 
 module.exports = router;

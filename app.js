@@ -4,8 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cookieSession = require('cookie-session');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 
 var homeRouter = require('./routes/home');
