@@ -4,7 +4,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 
 const secretKey = 'secret_key';
-const users = [
+var users = [
   {
     id: 1,
     name: 'james',
@@ -20,7 +20,7 @@ const users = [
 ];
 
 function generateToken(user) {
-  const payload = { userID: user.id, name: user.name };
+  const payload = { email: user.email, password: user.password };
   return jwt.sign(payload, secretKey, { expiresIn: '1h' });
 }
 
@@ -35,24 +35,27 @@ function authenticateToken(req, res, next) {
       return res.sendStatus(403);
     }
     req.user = user;
+    res.send({ msg: 'Token verified' }).status(200);
     next();
   });
 }
 
 router.get('/', function (req, res, next) {
   console.log(req.user);
-  res.json({ data: 'list of users' });
+  res.json({ data: 'list of users', users });
+  next();
 });
 
 // Signup api
-router.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res, next) => {
   const { name, email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 5);
   const user = { id: users.length + 1, name, email, password: hashedPassword };
   users.push(user);
   const token = generateToken(user);
   res.json({ token });
-  res.send({ msg: 'User created successfully' });
+  // res.send({ msg: 'User created successfully' });
+  next();
 });
 
 // Login api
@@ -71,15 +74,17 @@ router.post(
       return res.sendStatus(401);
     }
     console.log('passwords match');
+    res.send({ msg: 'User logged in successfully' }).status(200);
     next();
-  },
-  (req, res) => {
-    authenticateToken(req.param.authorization, res, next());
   }
+  // (req, res) => {
+  //   authenticateToken(req.param.authorization, res, next());
+  //   next();
+  // }
 );
 
-router.get('/profile', authenticateToken, (req, res) => {
-  res.json(req.user);
-});
+// router.get('/profile', authenticateToken, (req, res) => {
+//   res.json(req.user);
+// });
 
 module.exports = router;
