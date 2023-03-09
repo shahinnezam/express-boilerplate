@@ -9,13 +9,13 @@ const users = [
     id: 1,
     name: 'james',
     email: 'james@example.com',
-    password: '$2b$10$eVcM/bM09cJwyhbPDYXuVOnKZt57eSyV7ndiHT3FcFjKl2BJHbJ0m',
+    password: 'james123',
   },
   {
     id: 2,
     name: 'bob',
     email: 'bob@example.com',
-    password: '$2b$10$eVcM/bM09cJwyhbPDYXuVOnKZt572dlkasdlkfj2j3kjasfnvlnad',
+    password: 'abc123',
   },
 ];
 
@@ -31,7 +31,7 @@ function authenticateToken(req, res, next) {
     return res.sendStatus(401);
   }
   jwt.verify(token, secretKey, (err, user) => {
-    if (error) {
+    if (err) {
       return res.sendStatus(403);
     }
     req.user = user;
@@ -51,8 +51,8 @@ router.post('/signup', async (req, res) => {
   const user = { id: users.length + 1, name, email, password: hashedPassword };
   users.push(user);
   const token = generateToken(user);
-  res.send({ msg: 'User created successfully' });
   res.json({ token });
+  res.send({ msg: 'User created successfully' });
 });
 
 // Login api
