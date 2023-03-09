@@ -201,12 +201,12 @@ GET /media?category=music HTTP/1.1
 ```
  ---
 ### Login to account:
-### POST /media/login 
+### POST /users/login 
 
 **Request:**
 
 - **Method:** `POST`
-- **URL:** `/media/login`
+- **URL:** `/users/login`
 - **Body:**
 ```json
 {
@@ -230,7 +230,7 @@ GET /media?category=music HTTP/1.1
 **Request:**
 
 - **Method:** `POST`
-- **URL:** `/media/signup`
+- **URL:** `/users/signup`
 - **Body:**
 ```json
 {
