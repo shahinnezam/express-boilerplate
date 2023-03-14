@@ -5,10 +5,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer({ dest: '/users/odjuliarso/documents' });
 
 var homeRouter = require('./routes/home');
 var usersRouter = require('./routes/users');
 const { authCheck } = require('./auth/authCheck');
+var mediaRouter = require('./routes/media');
+var uploadRouter = require('./routes/fileupload');
+//var dataStorageRouter = require('./routes/dataStorage');
+
+// require('./database/connection');
 
 var app = express();
 
@@ -31,6 +38,9 @@ app.set('view engine', 'jade');
 
 app.use('/', homeRouter);
 app.use('/users', usersRouter);
+//app.use('/media', mediaRouter);
+app.use('/upload', uploadRouter);
+//app.use('/saveFile', authCheck, dataStorageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
