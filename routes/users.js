@@ -39,23 +39,33 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-
+// Get all users
 router.get('/', function (req, res, next) {
-  console.log(req.user);
+  // console.log(req.user);
   res.json({ data: 'list of users', users });
   next();
 });
 
 // Signup api
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 5);
-  const user = { id: users.length + 1, name, email, password: hashedPassword };
-  users.push(user);
-  const token = generateToken(user);
-  res.json({ token });
-  // res.send({ msg: 'User created successfully' });
-  next();
+
+  // find if email already exists in the database
+  if (users.find((u) => u.email === email)) {
+    res.status(400).send({ msg: 'User already exists' });
+  } else {
+    const hashedPassword = await bcrypt.hash(password, 5);
+    const user = {
+      id: users.length + 1,
+      name,
+      email,
+      password: hashedPassword,
+    };
+    users.push(user);
+    const token = generateToken(user);
+    res.json({ token });
+    // res.send({ msg: 'User created successfully' });
+  }
 });
 
 // Login api
@@ -66,15 +76,15 @@ router.post(
     const user = users.find((u) => u.email === email);
     if (!user) {
       console.log('User not found!');
-      return res.sendStatus(401);
+      return res.status(401).send('User not found!');
     }
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       console.log('Invalid password!');
-      return res.sendStatus(401);
+      return res.status(401).send('Invalid password!');
     }
     console.log('passwords match');
-    res.send({ msg: 'User logged in successfully' }).status(200);
+    res.send('Logged in!').status(200);
     next();
   }
   // (req, res) => {
