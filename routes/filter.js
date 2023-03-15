@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
-const photos = './photos';
-router.get('/filter', (req, res) => {
+const photos = './bin';
+router.get('/', (req, res) => {
   if (req.query.date) {
     const date = req.query.date;
     const files = fs.readdirSync(photos);
@@ -17,13 +18,20 @@ router.get('/filter', (req, res) => {
       return file.includes(title);
     });
   }
-  res.send(filteredFiles);
+  if (req.query.value) {
+    const value = req.query.value;
+    const files = fs.readdirSync(photos);
+    const filteredFiles = files.filter((file) => {
+      return file.includes(value);
+    });
+  }
   if (req.query.fileType) {
     const typefile = req.query.fileType;
     const files = fs.readdirSync(photos);
     const filteredFiles = files.filter((file) => {
       return file.includes(typefile);
     });
+      res.send(filteredFiles);
   } else {
     res.sendStatus(200);
     res.send('No filter');

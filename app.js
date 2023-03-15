@@ -13,6 +13,7 @@ var usersRouter = require('./routes/users');
 const { authCheck } = require('./auth/authCheck');
 var mediaRouter = require('./routes/media');
 var uploadRouter = require('./routes/fileupload');
+var filterRouter = require('./routes/filter');
 //var dataStorageRouter = require('./routes/dataStorage');
 
 // require('./database/connection');
@@ -40,8 +41,8 @@ app.use('/', homeRouter);
 app.use('/users', usersRouter);
 //app.use('/media', mediaRouter);
 app.use('/upload', uploadRouter);
-//app.use('/saveFile', authCheck, dataStorageRouter);
-
+//app.use('/saveFile', authCheck
+app.use('/filter', filterRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
