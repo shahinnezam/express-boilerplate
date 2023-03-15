@@ -1,7 +1,7 @@
-var express = require('express'),
-var aws = require('aws-sdk'),
-var bodyParser = require('body-parser'),
-var multer = require('multer'),
+var express = require('express');
+var aws = require('aws-sdk');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 var multerS3 = require('multer-s3');
 
 aws.config.update({
