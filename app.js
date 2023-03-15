@@ -6,7 +6,7 @@ var logger = require('morgan');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const upload = multer({ dest: '/users/odjuliarso/documents' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 var homeRouter = require('./routes/home');
 var usersRouter = require('./routes/users');

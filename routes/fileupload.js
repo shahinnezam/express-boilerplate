@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const multer = require('multer');
-const upload = multer({ dest: '/usr/ });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/upload', upload.single('file'), function (req, res) {
   const title = req.body.title;
