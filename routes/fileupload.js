@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const multer = require('multer');
-const upload = multer({ dest: '../bin' });
+const upload = multer({ dest: './bin' });
 
 router.get('/', (req, res, next) => {
   console.log('string');
@@ -23,7 +23,7 @@ router.get('/png', (req, res, next) => {
 });
 
 router.get('/file/:fileName', function (req, res) {
-  const filePath = '../bin'; // find out the filePath based on given fileName
+  const filePath = './bin'; // find out the filePath based on given fileName
   console.log('object');
   res.sendFile(filePath);
 });
