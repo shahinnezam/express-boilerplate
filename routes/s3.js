@@ -1,7 +1,7 @@
-var express = require('express'),
-var aws = require('aws-sdk'),
-var bodyParser = require('body-parser'),
-var multer = require('multer'),
+var express = require('express');
+var aws = require('aws-sdk');
+var bodyParser = require('body-parser');
+var multer = require('multer');
 var multerS3 = require('multer-s3');
 
 aws.config.update({
@@ -22,7 +22,7 @@ var upload = multer({
     bucket: '470final',
     key: function (req, file, cb) {
       console.log(file);
-      cb(null, file.Date.now()); 
+      cb(null, file.Date.now());
     },
   }),
 });
