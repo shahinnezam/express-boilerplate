@@ -9,6 +9,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/file', upload.single('file'), function (req, res) {
+  console.log(req.file.filename);
   const title = req.body.title;
   const file = req.file;
 
