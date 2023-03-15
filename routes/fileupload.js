@@ -2,13 +2,31 @@ var express = require('express');
 var router = express.Router();
 
 const multer = require('multer');
-const upload = multer({ dest: '../bin' });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../bin');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
+
+// const upload = multer({ dest: '../bin' });
+const upload = multer({ storage: storage }).single('file');
+
+const uploader = async (req, res, next) => {
+  upload(req, res, function (err) {
+    if (err) console.log(err);
+    else next();
+  });
+};
 
 router.get('/', (req, res, next) => {
   console.log('string');
 });
 
-router.post('/file', upload.single('file'), function (req, res) {
+router.post('/file', uploader, function (req, res) {
   const title = req.body.title;
   const file = req.file;
 
