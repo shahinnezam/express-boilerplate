@@ -26,24 +26,26 @@ router.get('/', (req, res, next) => {
   console.log('string');
 });
 
+// Post
 router.post('/file', uploader, function (req, res) {
   const title = req.body.title;
   const file = req.file;
 
   console.log(title);
   console.log(file);
+  res.send(file.buffer);
 
-  res.sendStatus(200);
+  // res.sendStatus(200);
 });
 
 router.get('/png', (req, res, next) => {
   console.log('object');
 });
 
-router.get('/file/:fileName', function (req, res) {
-  const filePath = '../bin'; // find out the filePath based on given fileName
-  console.log('object');
-  res.sendFile(filePath);
-});
+// router.get('/file/:fileName', function (req, res) {
+//   const filePath = '../bin'; // find out the filePath based on given fileName
+//   console.log('object');
+//   res.sendFile(filePath);
+// });
 
 module.exports = router;
