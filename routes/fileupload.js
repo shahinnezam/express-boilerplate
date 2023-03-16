@@ -1,11 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
 const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../bin');
+    cb(null, './bin');
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
@@ -22,9 +21,6 @@ const uploader = async (req, res, next) => {
   });
 };
 
-router.get('/', (req, res, next) => {
-  console.log('string');
-});
 
 // Post
 router.post('/file', uploader, function (req, res) {
@@ -33,19 +29,8 @@ router.post('/file', uploader, function (req, res) {
 
   console.log(title);
   console.log(file);
-  res.send(file.buffer);
-
-  // res.sendStatus(200);
+  
+  res.sendStatus(200);
 });
-
-router.get('/png', (req, res, next) => {
-  console.log('object');
-});
-
-// router.get('/file/:fileName', function (req, res) {
-//   const filePath = '../bin'; // find out the filePath based on given fileName
-//   console.log('object');
-//   res.sendFile(filePath);
-// });
 
 module.exports = router;
