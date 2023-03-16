@@ -15,6 +15,7 @@ var mediaRouter = require('./routes/media');
 var uploadRouter = require('./routes/fileupload');
 var downloadRouter = require('./routes/filedownload');
 var deleteRouter = require('./routes/filedelete');
+var updateRouter = require('./routes/fileupdate');
 //var dataStorageRouter = require('./routes/dataStorage');
 
 // require('./database/connection');
@@ -44,6 +45,7 @@ app.use('/users', usersRouter);
 app.use('/upload', uploadRouter);
 app.use('/download', downloadRouter);
 app.use('/delete', deleteRouter);
+app.use('/update', updateRouter);
 //app.use('/saveFile', authCheck, dataStorageRouter);
 
 // catch 404 and forward to error handler
