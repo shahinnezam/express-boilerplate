@@ -4,11 +4,11 @@ var bodyParser = require('body-parser');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
 
-aws.config.update({
-  secretAccessKey: 'PSUJBRdbRQTqhhYNASGt97C82ixPIQ5iBQwPisk9',
-  accessKeyId: 'AKIAUBKRRGB4PZCM2K5Y',
-  region: 'us-west-2',
-});
+// aws.config.update({
+//   secretAccessKey: '',
+//   accessKeyId: '',
+//   region: 'us-west-2',
+// });
 
 var app = express(),
   s3 = new aws.S3();
